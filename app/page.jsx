@@ -1,6 +1,14 @@
+import Link from 'next/link';
+
 const Homepage = () => {
-    return ( <div className='bg-brand-600 text-brand-900 text-2xl'>
-        Home Page
+    return ( <div>
+        <h1 className="text-3xl">
+            Welcome
+        </h1>
+        <Link href={{
+            pathname: 'properties',
+            query: {name: 'test'}
+        }}>Go to Properties</Link>
     </div> );
 }
  

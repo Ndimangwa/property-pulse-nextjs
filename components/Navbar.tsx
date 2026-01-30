@@ -8,9 +8,9 @@ import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
 
 const Navbar = () => {
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [isProfileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
   const pathname = usePathname();
 

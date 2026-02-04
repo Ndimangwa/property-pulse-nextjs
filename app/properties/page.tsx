@@ -1,6 +1,14 @@
 import PropertyCard from '@/components/PropertyCard';
-import properties from '@/sample-data/properties.json';
-const PropertiesPage = () => {
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
+const PropertiesPage = async () => {
+    await connectDB();
+    /*
+    Since this is a server component, it will load with properties included.
+    In MERN [client component], we would use routes , api with express.js
+    then , in useEffect(() => {}, []) , call the action to load properties
+    */
+    const properties = await Property.find({}).lean();
     return ( 
         <section className="px-4 py-6">
             <div className="container-xl lg: container m-auto px-4 py-6">

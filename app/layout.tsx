@@ -2,6 +2,7 @@
 import '@/assets/styles/globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AuthProvider from '@/components/AuthProvider';
 
 export const metadata = {
     title: 'Property Pulse',
@@ -13,16 +14,20 @@ type LayoutProps = {
     children: React.ReactNode;
 };
 
-const MainLayout = ({children}: LayoutProps) => {
-    return ( <html>
-        <body>
-            <Navbar/>
-            <main>
-                {children}
-            </main>
-            <Footer/>
-        </body>
-    </html> );
+const MainLayout = ({ children }: LayoutProps) => {
+    return (
+        <AuthProvider>
+            <html>
+                <body>
+                    <Navbar />
+                    <main>
+                        {children}
+                    </main>
+                    <Footer />
+                </body>
+            </html>
+        </AuthProvider>
+    );
 }
- 
+
 export default MainLayout;

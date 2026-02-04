@@ -1,8 +1,18 @@
 import Link from 'next/link';
 import PropertyCard from '@/components/PropertyCard';
-import properties from '@/sample-data/properties.json';
-const HomeProperties = () => {
-    const recentProperties = properties.slice(0, 3);
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
+const HomeProperties = async () => {
+    await connectDB();
+    /*
+    Since this is a server component, it will load with properties included.
+    In MERN [client component], we would use routes , api with express.js
+    then , in useEffect(() => {}, []) , call the action to load properties
+    */
+    const recentProperties = await Property.find({})
+                                    .sort({createdAt: -1})
+                                    .limit(3)
+                                    .lean();
     return (
         <>
             <section className="px-4 py-6">

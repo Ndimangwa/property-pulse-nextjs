@@ -1,19 +1,37 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaGoogle } from "react-icons/fa";
 import { usePathname } from "next/navigation";
+import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
+import providerIcons from "@/utils/providerIcons";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
 
+type ProviderProp = {
+  id: string;
+  name: string;
+  callbackUrl: string;
+  signinUrl: string;
+};
+type ProvidersProp = ProviderProp[];
 const Navbar = () => {
+  const { data: session } = useSession(); //naming data as session
   const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isProfileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [providers, setProviders] = useState<ProvidersProp | null>(null);
+  //const { callbackUrl, id, name, signinUrl, type } = provider
 
   const pathname = usePathname();
 
+  useEffect(() => {
+    //componentDidMount
+    const setAuthProviders = async () => {
+      const res = await getProviders();
+      setProviders(res);
+    }
+    setAuthProviders();
+  }, []);
   return (
     <nav className="bg-blue-700 border-b border-blue-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -61,26 +79,23 @@ const Navbar = () => {
               <div className="flex space-x-2">
                 <Link
                   href="/"
-                  className={`${
-                    pathname === "/" ? "bg-black" : ""
-                  } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                  className={`${pathname === "/" ? "bg-black" : ""
+                    } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
                   Home
                 </Link>
                 <Link
                   href="/properties"
-                  className={`${
-                    pathname === "/properties" ? "bg-black" : ""
-                  } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                  className={`${pathname === "/properties" ? "bg-black" : ""
+                    } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
                   Properties
                 </Link>
-                {isLoggedIn && (
+                {session && (
                   <Link
                     href="/properties/add"
-                    className={`${
-                      pathname === "/properties/add" ? "bg-black" : ""
-                    } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                    className={`${pathname === "/properties/add" ? "bg-black" : ""
+                      } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                   >
                     Add Property
                   </Link>
@@ -89,7 +104,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          {isLoggedIn ? (
+          {session ? (
             /* <!-- Right Side Menu (Logged In) --> */
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
               <Link href="/messages" className="relative group">
@@ -184,10 +199,25 @@ const Navbar = () => {
             /*<!-- Right Side Menu (Logged Out) --> */
             <div className="hidden md:block md:ml-6">
               <div className="flex items-center">
-                <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
-                  <FaGoogle className="text-white mr-2" />
-                  <span>Login or Register</span>
-                </button>
+                {providers && Object.values(providers).map((provider, index) => {
+                  const Icon = providerIcons[provider.id];
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => signIn(provider.id)}
+                      className="relative group flex items-center text-white bg-gray-700 mr-2 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
+                      {Icon && <Icon className="text-white mr-2" />}
+                      <span>Login or Register</span>
+                      {/*Tooltip*/}
+                      <span className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2
+             mt-2 hidden group-hover:block z-50
+             bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                        Sign in with {provider.name}
+                      </span>
+
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -200,36 +230,42 @@ const Navbar = () => {
           <div className="space-y-1 px-2 pb-3 pt-2">
             <Link
               href="/"
-              className={`${
-                pathname === "/" ? "bg-black" : ""
-              } text-white block rounded-md px-3 py-2 text-base font-medium`}
+              className={`${pathname === "/" ? "bg-black" : ""
+                } text-white block rounded-md px-3 py-2 text-base font-medium`}
             >
               Home
             </Link>
             <Link
               href="/properties"
-              className={`${
-                pathname === "/properties" ? "bg-black" : ""
-              } text-white block rounded-md px-3 py-2 text-base font-medium`}
+              className={`${pathname === "/properties" ? "bg-black" : ""
+                } text-white block rounded-md px-3 py-2 text-base font-medium`}
             >
               Properties
             </Link>
-            {isLoggedIn && (
+            {session && (
               <Link
                 href="/properties/add"
-                className={`${
-                  pathname === "/properties/add" ? "bg-black" : ""
-                } text-white block rounded-md px-3 py-2 text-base font-medium`}
+                className={`${pathname === "/properties/add" ? "bg-black" : ""
+                  } text-white block rounded-md px-3 py-2 text-base font-medium`}
               >
                 Add Property
               </Link>
             )}
-            {!isLoggedIn && (
-              <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5">
-                <FaGoogle className="text-white mr-2" />
-                <span>Login or Register</span>
-              </button>
-            )}
+            {!session && providers && Object.values(providers).map((provider) => {
+              const Icon = providerIcons[provider.id];
+              return (
+                <button className="relative group flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5">
+                  {Icon && <Icon className="text-white mr-2" />}
+                  <span>Login or Register</span>
+                  {/*Tooltip*/}
+                  <span className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2
+             mt-2 hidden group-hover:block z-50
+             bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                    Sign in with {provider.name}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

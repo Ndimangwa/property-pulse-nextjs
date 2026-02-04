@@ -6,13 +6,14 @@
 }
 /*Let me try my custom theme*/
 @theme {
+  --grid-template-columns-70-30: 70% 28%;
   --color-brand-50: color-mix(in oklab, #3AF2C9 10%, white);
   --color-brand-100: color-mix(in oklab, #3AF2C9 30%, white);
   --color-brand-600: #3AF2C9;
   --color-brand-900: color-mix(in oklab, #3AF2C9 70%, black);
 }
 /*
-<div className='bg-brand-600 text-brand-900'>Hello World</div>
+<div className='bg-brand-600 text-brand-900 grid-cols-70-30'>Hello World</div>
 */
 
 @theme inline {

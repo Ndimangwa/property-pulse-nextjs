@@ -17,10 +17,13 @@ type ProviderProp = {
 type ProvidersProp = ProviderProp[];
 const Navbar = () => {
   const { data: session } = useSession(); //naming data as session
+  console.log(session);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isProfileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
   const [providers, setProviders] = useState<ProvidersProp | null>(null);
   //const { callbackUrl, id, name, signinUrl, type } = provider
+  const profileImage = session?.user?.image;
+  console.log(profileImage);
 
   const pathname = usePathname();
 
@@ -149,7 +152,9 @@ const Navbar = () => {
                     <span className="sr-only">Open user menu</span>
                     <Image
                       className="h-8 w-8 rounded-full"
-                      src={profileDefault}
+                      src={profileImage || profileDefault}
+                      width={40}
+                      height={40}
                       alt=""
                     />
                   </button>
@@ -185,6 +190,10 @@ const Navbar = () => {
                     </Link>
                     <button
                       className="block px-4 py-2 text-sm text-gray-700"
+                      onClick={() => {
+                        setProfileMenuOpen(false);
+                        signOut();
+                      }}
                       role="menuitem"
                       tabIndex="-1"
                       id="user-menu-item-2"

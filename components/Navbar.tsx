@@ -17,13 +17,13 @@ type ProviderProp = {
 type ProvidersProp = ProviderProp[];
 const Navbar = () => {
   const { data: session } = useSession(); //naming data as session
-  console.log(session);
+  //console.log(session);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isProfileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
   const [providers, setProviders] = useState<ProvidersProp | null>(null);
   //const { callbackUrl, id, name, signinUrl, type } = provider
   const profileImage = session?.user?.image;
-  console.log(profileImage);
+  //console.log(profileImage);
 
   const pathname = usePathname();
 

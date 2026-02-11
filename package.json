@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "cloudinary": "^2.9.0",
     "mongodb": "^7.0.0",
     "mongoose": "^9.1.5",
     "next": "16.1.5",
@@ -23,6 +24,7 @@
     "@types/react": "19.2.10",
     "babel-plugin-react-compiler": "1.0.0",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "5.9.3"
   }
 }

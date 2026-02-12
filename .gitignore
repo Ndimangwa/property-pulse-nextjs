@@ -42,3 +42,5 @@ next-env.d.ts
 
 # themefiles
 _theme_files
+# my garage files
+garage/

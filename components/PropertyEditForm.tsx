@@ -1,11 +1,51 @@
-import addProperty from "@/app/actions/addProperty";
+import updateProperty from "@/app/actions/updateProperty";
 import { amenityOptions } from "@/utils/applicationConstants";
 
-const PropertyAddForm = () => {
+type PropertyEditFormProps = {
+    property: {
+        _id: number | string;
+        name: string;
+        type: string;
+        description: string;
+        location: {
+            street: string;
+            city: string;
+            zipcode: string;
+            state: string;
+        };
+        beds: number;
+        baths: number;
+        square_feet: number;
+        amenities: string[];
+        rates: {
+            nightly?: number;
+            weekly?: number;
+            monthly?: number;
+        };
+        seller_info: {
+            name: string;
+            email: string;
+            phone: string;
+        };
+    }
+};
+
+const PropertyEditForm = ({ property }: PropertyEditFormProps) => {
+    //Destructuring
+    const {
+        _id, name, type, description, location: { street, city, zipcode, state },
+        beds, baths, square_feet, amenities, rates: { nightly, weekly, monthly },
+        seller_info: {
+            name: seller_name,
+            email: seller_email,
+            phone: seller_phone
+        }
+    } = property;
+    const updatePropertyById = updateProperty.bind(null, _id); 
     return (
-        <form action={addProperty}>
+        <form action={updatePropertyById}>
             <h2 className="text-3xl text-center font-semibold mb-6">
-                Add Property
+                Edit Property
             </h2>
 
             <div className="mb-4">
@@ -16,6 +56,7 @@ const PropertyAddForm = () => {
                     id="type"
                     name="type"
                     className="border rounded w-full py-2 px-3"
+                    defaultValue={type}
                     required
                 >
                     <option value="Apartment">Apartment</option>
@@ -35,6 +76,7 @@ const PropertyAddForm = () => {
                     type="text"
                     id="name"
                     name="name"
+                    defaultValue={name}
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="eg. Beautiful Apartment In Miami"
                     required
@@ -49,6 +91,7 @@ const PropertyAddForm = () => {
                 <textarea
                     id="description"
                     name="description"
+                    defaultValue={description}
                     className="border rounded w-full py-2 px-3"
                     rows="4"
                     placeholder="Add an optional description of your property"
@@ -61,6 +104,7 @@ const PropertyAddForm = () => {
                     type="text"
                     id="street"
                     name="location.street"
+                    defaultValue={street}
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="Street"
                 />
@@ -68,6 +112,7 @@ const PropertyAddForm = () => {
                     type="text"
                     id="city"
                     name="location.city"
+                    defaultValue={city}
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="City"
                     required
@@ -76,6 +121,7 @@ const PropertyAddForm = () => {
                     type="text"
                     id="state"
                     name="location.state"
+                    defaultValue={state}
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="State"
                     required
@@ -84,6 +130,7 @@ const PropertyAddForm = () => {
                     type="text"
                     id="zipcode"
                     name="location.zipcode"
+                    defaultValue={zipcode}
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="Zipcode"
                 />
@@ -97,6 +144,7 @@ const PropertyAddForm = () => {
                         type="number"
                         id="beds"
                         name="beds"
+                        defaultValue={beds}
                         className="border rounded w-full py-2 px-3"
                         required
                     />
@@ -108,6 +156,7 @@ const PropertyAddForm = () => {
                         type="number"
                         id="baths"
                         name="baths"
+                        defaultValue={baths}
                         className="border rounded w-full py-2 px-3"
                         required
                     />
@@ -121,6 +170,7 @@ const PropertyAddForm = () => {
                         type="number"
                         id="square_feet"
                         name="square_feet"
+                        defaultValue={square_feet}
                         className="border rounded w-full py-2 px-3"
                         required
                     />
@@ -138,6 +188,7 @@ const PropertyAddForm = () => {
                                     type="checkbox"
                                     name="amenities"
                                     value={amenity}
+                                    defaultChecked={amenities.includes(amenity)}
                                     className="mr-2"
                                 />
                                 {amenity}
@@ -160,6 +211,7 @@ const PropertyAddForm = () => {
                             type="number"
                             id="weekly_rate"
                             name="rates.weekly"
+                            defaultValue={weekly}
                             className="border rounded w-full py-2 px-3"
                         />
                     </div>
@@ -169,6 +221,7 @@ const PropertyAddForm = () => {
                             type="number"
                             id="monthly_rate"
                             name="rates.monthly"
+                            defaultValue={monthly}
                             className="border rounded w-full py-2 px-3"
                         />
                     </div>
@@ -178,6 +231,7 @@ const PropertyAddForm = () => {
                             type="number"
                             id="nightly_rate"
                             name="rates.nightly"
+                            defaultValue={nightly}
                             className="border rounded w-full py-2 px-3"
                         />
                     </div>
@@ -194,6 +248,7 @@ const PropertyAddForm = () => {
                     type="text"
                     id="seller_name"
                     name="seller_info.name"
+                    defaultValue={seller_name}
                     className="border rounded w-full py-2 px-3"
                     placeholder="Name"
                 />
@@ -208,6 +263,7 @@ const PropertyAddForm = () => {
                     type="email"
                     id="seller_email"
                     name="seller_info.email"
+                    defaultValue={seller_email}
                     className="border rounded w-full py-2 px-3"
                     placeholder="Email address"
                     required
@@ -223,36 +279,22 @@ const PropertyAddForm = () => {
                     type="tel"
                     id="seller_phone"
                     name="seller_info.phone"
+                    defaultValue={seller_phone}
                     className="border rounded w-full py-2 px-3"
                     placeholder="Phone"
                 />
             </div>
-
-            <div className="mb-4">
-                <label htmlFor="images" className="block text-gray-700 font-bold mb-2"
-                >Images (Select up to 4 images)</label
-                >
-                <input
-                    type="file"
-                    id="images"
-                    name="images"
-                    className="border rounded w-full py-2 px-3"
-                    accept="image/*"
-                    multiple
-                    required
-                />
-            </div>
-
+            {/* we will not handle images here */}
             <div>
                 <button
                     className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                     type="submit"
                 >
-                    Add Property
+                    Update Property
                 </button>
             </div>
         </form>
     );
 }
 
-export default PropertyAddForm;
+export default PropertyEditForm;

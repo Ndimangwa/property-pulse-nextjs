@@ -5,6 +5,7 @@ import Property from "@/models/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { PROPERTY_REACT_TOAST } from "@/utils/applicationConstants";
 
 async function updateProperty(propertyId: string, formData: FormData) {
     await connectDB();
@@ -53,7 +54,7 @@ async function updateProperty(propertyId: string, formData: FormData) {
     const updatedProperty = await existingProperty.save();
 
     revalidatePath("/", "layout");
-    redirect(`/properties/${updatedProperty._id}`);
+    redirect(`/properties/${updatedProperty._id}?${PROPERTY_REACT_TOAST.ACTION_NAME}=${PROPERTY_REACT_TOAST.MESSAGES.UPDATED_SUCCESSFUL}`);
 }
 
 export default updateProperty;

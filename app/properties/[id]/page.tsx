@@ -6,13 +6,14 @@ import { FaArrowLeft } from 'react-icons/fa';
 import Link from "next/link";
 import PropertyImages from "@/components/PropertyImages";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import SuccessToast from "@/utils/SuccessToast";
 const PropertyPage = async ({ params }) => {
     const { id } = await params;
     await connectDB();
     const propertyDoc = await Property.findById(id)
         .lean();
     const property = convertToSerializableObject(propertyDoc);
-    if (! property) {
+    if (!property) {
         return (
             <h1 className="text-center text-2xl font-bold mt-10">
                 Property Not Found
@@ -38,12 +39,14 @@ const PropertyPage = async ({ params }) => {
                 <div className="container m-auto py-10 px-6">
                     <div className="grid grid-cols-1 md:grid-cols-70-30 w-full gap-6">
                         {/* Property Info */}
-                        <PropertyDetails property={property}/>
+                        <PropertyDetails property={property} />
                     </div>
                 </div>
             </section>
             {/* Displaying other images */}
-            <PropertyImages images={property.images}/>
+            <PropertyImages images={property.images} />
+            {/*Showing Toast*/}
+            <SuccessToast/>
         </>
     );
 }

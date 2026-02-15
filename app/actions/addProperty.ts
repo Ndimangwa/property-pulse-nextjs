@@ -6,7 +6,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
-import { CLOUDINARY_FOLDER } from "@/utils/applicationConstants";
+import { CLOUDINARY_FOLDER, PROPERTY_REACT_TOAST } from "@/utils/applicationConstants";
 
 async function addProperty(formData: FormData) {
     await connectDB();
@@ -66,7 +66,7 @@ async function addProperty(formData: FormData) {
     await newProperty.save();
 
     revalidatePath("/", "layout");
-    redirect(`/properties/${newProperty._id}`);
+    redirect(`/properties/${newProperty._id}?${PROPERTY_REACT_TOAST.ACTION_NAME}=${PROPERTY_REACT_TOAST.MESSAGES.CREATED_SUCCESSFUL}`);
 }
 
 export default addProperty;

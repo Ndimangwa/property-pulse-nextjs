@@ -32,8 +32,10 @@ export default function SuccessToast() {
             const newParams = new URLSearchParams(searchParams.toString());
             newParams.delete(PROPERTY_REACT_TOAST.ACTION_NAME);
 
+            const queryString = newParams.toString();
+
             router.replace(
-                `${window.location.pathname}${newParams.toString() ? `?${newParams}` : ""
+                `${window.location.pathname}${queryString ? `?${queryString}` : ""
                 }`,
                 { scroll: false }
             );

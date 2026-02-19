@@ -1,5 +1,5 @@
 import addProperty from "@/app/actions/addProperty";
-import { amenityOptions } from "@/utils/applicationConstants";
+import { amenityOptions, propertyTypes } from "@/utils/applicationConstants";
 
 const PropertyAddForm = () => {
     return (
@@ -18,13 +18,10 @@ const PropertyAddForm = () => {
                     className="border rounded w-full py-2 px-3"
                     required
                 >
-                    <option value="Apartment">Apartment</option>
-                    <option value="Condo">Condo</option>
-                    <option value="House">House</option>
-                    <option value="CabinOrCottage">Cabin or Cottage</option>
-                    <option value="Room">Room</option>
-                    <option value="Studio">Studio</option>
-                    <option value="Other">Other</option>
+                    { propertyTypes.map((type, index) => (
+                        <option key={index} value={type}>{type}</option>
+                    )) }
+                    <option key={propertyTypes.length} value="Other">Other</option>
                 </select>
             </div>
             <div className="mb-4">

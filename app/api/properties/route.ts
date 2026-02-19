@@ -5,6 +5,7 @@ import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database";
 import User from "@/models/User";
 import Property from "@/models/Property";
+import {CLOUDINARY_FOLDER} from "@/utils/applicationConstants";
 
 export async function POST(request: Request) {
     try {
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
                 const result = await cloudinary.uploader.upload(
                     `data:image/png;base64,${imageBase64}`,
                     {
-                        folder: "property-pulse",
+                        folder: CLOUDINARY_FOLDER,
                     }
                 );
 

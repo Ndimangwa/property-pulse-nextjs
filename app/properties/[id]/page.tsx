@@ -11,7 +11,7 @@ import BookmarkButton from "@/components/BookmarkButton";
 import ShareButtons from "@/components/ShareButtons";
 import PropertyContactForm from "@/components/PropertyContactForm";
 
-const PropertyPage = async ({ params }) => {
+const PropertyPage = async ({ params } : { params: number|string; }) => {
     const { id } = await params;
     await connectDB();
     const propertyDoc = await Property.findById(id)

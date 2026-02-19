@@ -7,3 +7,6 @@ export const PROPERTY_REACT_TOAST = {
 		UPDATED_SUCCESSFUL: 'on-update-successful'
 	}
 };
+export const propertyTypes = [
+	'Apartment', 'Studio', 'Condo', 'House', 'Cabin or Cottage', 'Loft', 'Room'
+];

@@ -9,18 +9,17 @@ import { FaArrowAltCircleLeft } from "react-icons/fa";
 const SearchResultsPage = async ({
   searchParams,
 }: {
-  searchParams: { location?: string; propertyType?: string };
+  searchParams: Promise<{ location?: string; propertyType?: string }>;
 }) => {
   await connectDB();
 
-  // Safe defaults (searchParams is synchronous)
-  const location = searchParams.location || "";
-  const propertyType = searchParams.propertyType || "All";
+  // Await searchParams (Next.js 15+ requirement)
+  const { location = "", propertyType = "All" } = await searchParams;
 
   let query: any = {};
 
   // Location filter
-  if (location) {
+  if (location.trim() !== "") {
     const locationPattern = new RegExp(location, "i");
 
     query.$or = [
@@ -39,7 +38,6 @@ const SearchResultsPage = async ({
   }
 
   const propertiesQueryResults = await Property.find(query).lean();
-
   const properties = convertToSerializableObject(propertiesQueryResults);
 
   return (

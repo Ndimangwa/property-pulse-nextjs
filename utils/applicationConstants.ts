@@ -8,5 +8,5 @@ export const PROPERTY_REACT_TOAST = {
 	}
 };
 export const propertyTypes = [
-	'Apartment', 'Studio', 'Condo', 'House', 'Cabin or Cottage', 'Loft', 'Room'
+	'Apartment', 'Studio', 'Condo', 'House', 'Cottage Or Cabin', 'Chalet', 'Loft', 'Room'
 ];

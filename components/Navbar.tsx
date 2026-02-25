@@ -7,6 +7,7 @@ import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 import providerIcons from "@/utils/providerIcons";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
+import UnreadMessageCount from "./UnreadMessageCount";
 
 type ProviderProp = {
   id: string;
@@ -132,10 +133,7 @@ const Navbar = () => {
                     />
                   </svg>
                 </button>
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                  2
-                  {/* <!-- Replace with the actual number of notifications --> */}
-                </span>
+                <UnreadMessageCount/>
               </Link>
               {/* <!-- Profile dropdown button --> */}
               <div className="relative ml-3">
@@ -194,7 +192,9 @@ const Navbar = () => {
                       className="block px-4 py-2 text-sm text-gray-700"
                       onClick={() => {
                         setProfileMenuOpen(false);
-                        signOut();
+                        signOut({
+                          callbackUrl: "/"
+                        });
                       }}
                       role="menuitem"
                       tabIndex="-1"

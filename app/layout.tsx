@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import AuthProvider from '@/components/AuthProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GlobalProvider } from '@/context/GlobalContext';
 
 export const metadata = {
     title: 'Property Pulse',
@@ -19,17 +20,19 @@ type LayoutProps = {
 const MainLayout = ({ children }: LayoutProps) => {
     return (
         <AuthProvider>
-            <html>
-                <body>
-                    <Navbar />
-                    <main>
-                        {children}
-                    </main>
-                    <Footer />
-                    {/* For ToastContainer , it does not matter where you put it*/}
-                    <ToastContainer/>
-                </body>
-            </html>
+            <GlobalProvider>
+                <html>
+                    <body>
+                        <Navbar />
+                        <main>
+                            {children}
+                        </main>
+                        <Footer />
+                        {/* For ToastContainer , it does not matter where you put it*/}
+                        <ToastContainer />
+                    </body>
+                </html>
+            </GlobalProvider>
         </AuthProvider>
     );
 }

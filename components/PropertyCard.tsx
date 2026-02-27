@@ -3,6 +3,7 @@ import {
 } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
+import getRateDisplay from '@/utils/getRateDisplay';
 
 type PropertyCardProps = {
   property: {
@@ -21,23 +22,11 @@ type PropertyCardProps = {
       monthly?: number;
       nightly?: number;
     };
-    images: string[];
+    images: string[]; 
   };
 };
 const PropertyCard = ({ property }: PropertyCardProps) => {
   const { _id, name, type, location: { city, state }, beds, baths, square_feet, images } = property;
-  const getRateDisplay = () => {
-    const { rates: { weekly, monthly, nightly } } = property;
-    if (monthly) {
-      return `$${monthly.toLocaleString()}/mo`;
-    }
-    if (weekly) {
-      return `$${weekly.toLocaleString()}/wk`;
-    }
-    if (nightly) {
-      return `$${nightly.toLocaleString()}/night`;
-    }
-  }
   return (
     <div className="rounded-xl shadow-md relative">
       <Link href={`/properties/${_id}`}>
@@ -58,7 +47,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         <h3
           className="absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-blue-500 font-bold text-right md:text-center lg:text-right"
         >
-          {getRateDisplay()}
+          {getRateDisplay(property)}
         </h3>
 
         <div className="flex justify-center gap-4 text-gray-500 mb-4">
